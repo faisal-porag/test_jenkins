@@ -1,0 +1,27 @@
+pipeline {
+    agent any
+    
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+        
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    docker.build("myapp:${env.BUILD_NUMBER}", "-f Dockerfile .")
+                }
+            }
+        }
+        
+        stage('Run Docker Container') {
+            steps {
+                script {
+                    docker.image("myapp:${env.BUILD_NUMBER}").run('-p 8080:8080')
+                }
+            }
+        }
+    }
+}
