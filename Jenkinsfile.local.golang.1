@@ -1,0 +1,25 @@
+pipeline {
+  agent any
+
+  stages {
+    stage('Checkout') {
+      steps {
+        checkout scm
+      }
+    }
+
+    stage('Build and Test') {
+      steps {
+        sh 'go mod download' // Download dependencies
+        sh 'go build -o myapp'
+        sh 'go test ./...'
+      }
+    }
+
+    stage('Publish') {
+      steps {
+        // Publish artifacts, deploy, or any other post-build actions
+      }
+    }
+  }
+}
